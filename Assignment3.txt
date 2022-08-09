@@ -1,0 +1,144 @@
+mysql> select * from Dept;
++---------+----------+-----------+
+| Dept_id | dname    | dlocation |
++---------+----------+-----------+
+|       1 | Computer | Pune      |
+|       2 | IT       | Mumbai    |
+|       3 | ENTC     | Nagpur    |
++---------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Employee;
++--------+---------+-----------+-------------+-------------+--------+------------+
+| Emp_id | Dept_id | fname     | lname       | designation | salary | JoinDate   |
++--------+---------+-----------+-------------+-------------+--------+------------+
+|      1 |       1 | Nikita    | Gokhale     | President   |   6000 | 2020-11-18 |
+|      2 |       3 | Kshitija  | Gondhalekar | Manager     |   2750 | 2020-05-01 |
+|      3 |       1 | Pratham   | Doke        | Manager     |   2550 | 2020-06-09 |
+|      4 |       2 | Samruddhi | Kadam       | Manager     |   2957 | 2020-04-02 |
+|      5 |       2 | Ruturaj   | Ghatage     | Analyst     |   3100 | 2020-04-19 |
+|      6 |       2 | Sanika    | Inamdar     | Analyst     |   3100 | 2020-12-03 |
+|      7 |       2 | Sushil    | Kumar       | Clerk       |    900 | 2020-12-18 |
+|      8 |       3 | Harsh     | Jain        | Salesman    |   1700 | 2020-02-20 |
+|      9 |       3 | Ayush     | Gala        | Salesman    |   1350 | 2020-02-22 |
+|     10 |       3 | Rohan     | Doshi       | Salesman    |   1634 | 2015-09-28 |
++--------+---------+-----------+-------------+-------------+--------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select * from Project;
++---------+---------+-------+---------------+---------+-------+
+| Proj_id | Dept_id | Pname | Plocation     | Pcost   | Pyear |
++---------+---------+-------+---------------+---------+-------+
+|    5485 |       2 | ProjA | San francisco | 4365700 |  2025 |
+|    5486 |       1 | ProjB | Moscow        | 2100826 |  2026 |
+|    5487 |       1 | ProjC | Delhi         | 7287082 |  2082 |
+|    5488 |       2 | ProjD | Tokyo         | 7106126 |  2026 |
+|    5489 |       1 | ProjE | Pune          | 8449264 |  2064 |
+|    5490 |       3 | ProjF | Mumbai        | 6210015 |  2035 |
+|    5491 |       3 | ProjG | Nagpur        | 4879965 |  2065 |
++---------+---------+-------+---------------+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select * from Employee natural join Dept;
++---------+--------+-----------+-------------+-------------+--------+------------+----------+-----------+
+| Dept_id | Emp_id | fname     | lname       | designation | salary | JoinDate   | dname    | dlocation |
++---------+--------+-----------+-------------+-------------+--------+------------+----------+-----------+
+|       1 |      1 | Nikita    | Gokhale     | President   |   6000 | 2020-11-18 | Computer | Pune      |
+|       3 |      2 | Kshitija  | Gondhalekar | Manager     |   2750 | 2020-05-01 | ENTC     | Nagpur    |
+|       1 |      3 | Pratham   | Doke        | Manager     |   2550 | 2020-06-09 | Computer | Pune      |
+|       2 |      4 | Samruddhi | Kadam       | Manager     |   2957 | 2020-04-02 | IT       | Mumbai    |
+|       2 |      5 | Ruturaj   | Ghatage     | Analyst     |   3100 | 2020-04-19 | IT       | Mumbai    |
+|       2 |      6 | Sanika    | Inamdar     | Analyst     |   3100 | 2020-12-03 | IT       | Mumbai    |
+|       2 |      7 | Sushil    | Kumar       | Clerk       |    900 | 2020-12-18 | IT       | Mumbai    |
+|       3 |      8 | Harsh     | Jain        | Salesman    |   1700 | 2020-02-20 | ENTC     | Nagpur    |
+|       3 |      9 | Ayush     | Gala        | Salesman    |   1350 | 2020-02-22 | ENTC     | Nagpur    |
+|       3 |     10 | Rohan     | Doshi       | Salesman    |   1634 | 2015-09-28 | ENTC     | Nagpur    |
++---------+--------+-----------+-------------+-------------+--------+------------+----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> select fname, designation, dlocation, JoinDate from Employee natural join Dept;
++-----------+-------------+-----------+------------+
+| fname     | designation | dlocation | JoinDate   |
++-----------+-------------+-----------+------------+
+| Nikita    | President   | Pune      | 2020-11-18 |
+| Kshitija  | Manager     | Nagpur    | 2020-05-01 |
+| Pratham   | Manager     | Pune      | 2020-06-09 |
+| Samruddhi | Manager     | Mumbai    | 2020-04-02 |
+| Ruturaj   | Analyst     | Mumbai    | 2020-04-19 |
+| Sanika    | Analyst     | Mumbai    | 2020-12-03 |
+| Sushil    | Clerk       | Mumbai    | 2020-12-18 |
+| Harsh     | Salesman    | Nagpur    | 2020-02-20 |
+| Ayush     | Salesman    | Nagpur    | 2020-02-22 |
+| Rohan     | Salesman    | Nagpur    | 2015-09-28 |
++-----------+-------------+-----------+------------+
+10 rows in set (0.00 sec)
+
+mysql> select Emp_id, Dept_id, fname, lname, designation, salary, JoinDate, Proj_id, Pcost from Employee natural join Project where Plocation!='Hyderabad';
++--------+---------+-----------+-------------+-------------+--------+------------+---------+---------+
+| Emp_id | Dept_id | fname     | lname       | designation | salary | JoinDate   | Proj_id | Pcost   |
++--------+---------+-----------+-------------+-------------+--------+------------+---------+---------+
+|      1 |       1 | Nikita    | Gokhale     | President   |   6000 | 2020-11-18 |    5486 | 2100826 |
+|      1 |       1 | Nikita    | Gokhale     | President   |   6000 | 2020-11-18 |    5487 | 7287082 |
+|      1 |       1 | Nikita    | Gokhale     | President   |   6000 | 2020-11-18 |    5489 | 8449264 |
+|      2 |       3 | Kshitija  | Gondhalekar | Manager     |   2750 | 2020-05-01 |    5490 | 6210015 |
+|      2 |       3 | Kshitija  | Gondhalekar | Manager     |   2750 | 2020-05-01 |    5491 | 4879965 |
+|      3 |       1 | Pratham   | Doke        | Manager     |   2550 | 2020-06-09 |    5486 | 2100826 |
+|      3 |       1 | Pratham   | Doke        | Manager     |   2550 | 2020-06-09 |    5487 | 7287082 |
+|      3 |       1 | Pratham   | Doke        | Manager     |   2550 | 2020-06-09 |    5489 | 8449264 |
+|      4 |       2 | Samruddhi | Kadam       | Manager     |   2957 | 2020-04-02 |    5485 | 4365700 |
+|      4 |       2 | Samruddhi | Kadam       | Manager     |   2957 | 2020-04-02 |    5488 | 7106126 |
+|      5 |       2 | Ruturaj   | Ghatage     | Analyst     |   3100 | 2020-04-19 |    5485 | 4365700 |
+|      5 |       2 | Ruturaj   | Ghatage     | Analyst     |   3100 | 2020-04-19 |    5488 | 7106126 |
+|      6 |       2 | Sanika    | Inamdar     | Analyst     |   3100 | 2020-12-03 |    5485 | 4365700 |
+|      6 |       2 | Sanika    | Inamdar     | Analyst     |   3100 | 2020-12-03 |    5488 | 7106126 |
+|      7 |       2 | Sushil    | Kumar       | Clerk       |    900 | 2020-12-18 |    5485 | 4365700 |
+|      7 |       2 | Sushil    | Kumar       | Clerk       |    900 | 2020-12-18 |    5488 | 7106126 |
+|      8 |       3 | Harsh     | Jain        | Salesman    |   1700 | 2020-02-20 |    5490 | 6210015 |
+|      8 |       3 | Harsh     | Jain        | Salesman    |   1700 | 2020-02-20 |    5491 | 4879965 |
+|      9 |       3 | Ayush     | Gala        | Salesman    |   1350 | 2020-02-22 |    5490 | 6210015 |
+|      9 |       3 | Ayush     | Gala        | Salesman    |   1350 | 2020-02-22 |    5491 | 4879965 |
+|     10 |       3 | Rohan     | Doshi       | Salesman    |   1634 | 2015-09-28 |    5490 | 6210015 |
+|     10 |       3 | Rohan     | Doshi       | Salesman    |   1634 | 2015-09-28 |    5491 | 4879965 |
++--------+---------+-----------+-------------+-------------+--------+------------+---------+---------+
+22 rows in set (0.00 sec)
+
+mysql> select dname, fname, lname from Employee natural join Dept, Project where Pyear = '2020';
+Empty set (0.00 sec)
+
+mysql> select designation, Dept_id from Employee natural join Project where Pcost >300000;
++-------------+---------+
+| designation | Dept_id |
++-------------+---------+
+| President   |       1 |
+| President   |       1 |
+| President   |       1 |
+| Manager     |       3 |
+| Manager     |       3 |
+| Manager     |       1 |
+| Manager     |       1 |
+| Manager     |       1 |
+| Manager     |       2 |
+| Manager     |       2 |
+| Analyst     |       2 |
+| Analyst     |       2 |
+| Analyst     |       2 |
+| Analyst     |       2 |
+| Clerk       |       2 |
+| Clerk       |       2 |
+| Salesman    |       3 |
+| Salesman    |       3 |
+| Salesman    |       3 |
+| Salesman    |       3 |
+| Salesman    |       3 |
+| Salesman    |       3 |
++-------------+---------+
+22 rows in set (0.00 sec)
+
+mysql> select * from Project where Pyear = '2026';
++---------+---------+-------+-----------+---------+-------+
+| Proj_id | Dept_id | Pname | Plocation | Pcost   | Pyear |
++---------+---------+-------+-----------+---------+-------+
+|    5486 |       1 | ProjB | Moscow    | 2100826 |  2026 |
+|    5488 |       2 | ProjD | Tokyo     | 7106126 |  2026 |
++---------+---------+-------+-----------+---------+-------+
+2 rows in set (0.00 sec)
