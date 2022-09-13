@@ -1,0 +1,28 @@
+create table Borrower(Roll_no int, Name varchar(25), Issue_Date date, BookName varchar(20),status varchar(20));
+create table Fine(Roll_no int, Return_Date date, Amt int);
+
+
+insert into Borrower values(12, 'Pratham','2022-10-23','HarryPottur','Issued');
+insert into Borrower values(13, 'Kshitija','2022-6-3','HurryPotter','Issued');
+insert into Borrower values(14, 'Nikita','2022-5-4','HarryPutter','Issued');
+insert into Borrower values(15, 'Ayush','2022-9-5','HurryPutter','Issued');
+
+
+DELIMITER && 
+create procedure add_data(in bname varchar(20),in roll_no int)
+BEGIN
+declare days int;
+DECLARE EXIT HANDLER FOR SQLEXCEPTION
+BEGIN
+SELECT 'ERROR OCCURED' as 'MESSAGE';
+END;
+DECLARE EXIT HANDLER FOR NOT FOUND SELECT 'RECORD NOT FOUND' AS 'MESSAGE';
+select datediff(curdate(),Issue_Date) into days from Borrower where BookName = bname and Roll_no = roll_no;
+IF days > 15 and days < 30 THEN
+insert into Fine values(roll_no, curdate(), (days-15)*5);
+ELSEIF days > 30 THEN
+insert into Fine values(roll_no,curdate(),(days-30)*50+15*5);
+END IF;
+update Borrower set status = "RETURNED" where BookName = bname and Roll_no = roll_no;
+END &&
+DELIMITER ;
